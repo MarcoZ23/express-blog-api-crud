@@ -2,12 +2,16 @@ const posts = require("../data/posts");
 
 
 const index = (req, res) => {
-    res.send('Posts del mio Blog')
+    res.json(posts)
 }
 
 const show = (req, res) => {
-    const id = req.params.id;
-    res.send(`Dettagli del post con id: ${id}`);
+    const postsId = parseInt(req.params.id);
+    const thisPost = posts.find(post => post.id === postsId);
+    if (!thisPost) {
+        return res.status(404).send('Post non trovato');
+    }
+    res.json(thisPost);
 }
 
 const store = (req, res) => {
@@ -15,18 +19,26 @@ const store = (req, res) => {
 }
 
 const update = (req, res) => {
-    const id = req.params.id;
-    res.send(`Aggiornamento del post con id: ${id}`);
+    const postsId = req.params.id;
+    res.send(`Aggiornamento del post con id: ${postsId}`);
 }
 
 const modify = (req, res) => {
-    const id = req.params.id;
-    res.send(`Modifica del post con id: ${id}`);
+    const postsId = req.params.id;
+    res.send(`Modifica del post con id: ${postsId}`);
 }
 
 const destroy = (req, res) => {
-    const id = req.params.id;
-    res.send(`Eliminazione del post con id: ${id}`);
+    const postsId = parseInt(req.params.id);
+    const thisPost = posts.find(post => post.id === postsId);
+    if (!thisPost) {
+        return res.status(404).json({ error: "true", message: "404 Post non trovato" });
+    }
+    const index = posts.indexOf(thisPost);
+    posts.splice(index, 1);
+
+    console.log(posts);
+    res.sendStatus(204);
 }
 
 

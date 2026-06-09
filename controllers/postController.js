@@ -16,9 +16,16 @@ const show = (req, res) => {
 
 const store = (req, res) => {
 
-    console.log(req.body);
-    res.send('Creazione di un nuovo post');
+    const newId = posts[posts.length - 1].id + 1;
+    const newPost = {
+        id: newId,
+        ...req.body
+    }
+    posts.push(newPost);
+    console.log(posts);
+    res.status(201).json(newPost);
 }
+
 
 const update = (req, res) => {
     const postsId = req.params.id;

@@ -5,9 +5,8 @@ const port = 3000;
 
 app.use(express.static('public'));
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-})
+app.use(express.json());
+
 
 app.get('/', (req, res) => {
     res.send('Server del mio Blog')
@@ -15,3 +14,8 @@ app.get('/', (req, res) => {
 
 
 app.use('/posts', require('./routers/posts'));
+
+
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+})

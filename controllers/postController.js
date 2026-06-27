@@ -4,12 +4,15 @@ const connection = require("../database/connection");
 
 const index = (req, res) => {
 
-    const tag = req.query.tag;
-    if (tag) {
-        const filteredPosts = posts.filter(post => post.tags.includes(tag));
-        return res.json(filteredPosts);
-    }
-    res.json(posts);
+    const sql = 'SELECT * FROM posts';
+    connection.query(sql, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: true, message: 'Errore interno del server' });
+        }
+        console.log(results);
+        res.json(results);
+    });
+
 }
 
 const show = (req, res) => {

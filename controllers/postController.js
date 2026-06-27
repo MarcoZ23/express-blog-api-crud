@@ -61,15 +61,13 @@ const modify = (req, res) => {
 
 const destroy = (req, res) => {
     const postsId = parseInt(req.params.id);
-    const thisPost = posts.find(post => post.id === postsId);
-    if (!thisPost) {
-        return res.status(404).json({ error: true, message: "404 Post non trovato" });
-    }
-    const index = posts.indexOf(thisPost);
-    posts.splice(index, 1);
-
-    console.log(posts);
-    res.sendStatus(204);
+    connection.query('DELETE FROM posts WHERE id = ?', [postsId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: true, message: 'Errore interno del server' });
+            res.sendStatus(204);
+        }
+        res.sendStatus(204);
+    });
 }
 
 

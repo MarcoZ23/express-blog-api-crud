@@ -17,11 +17,17 @@ const index = (req, res) => {
 
 const show = (req, res) => {
     const postsId = parseInt(req.params.id);
-    const thisPost = posts.find(post => post.id === postsId);
-    if (!thisPost) {
-        return res.status(404).json({ error: true, message: "404 Post non trovato" });
-    }
-    res.json(thisPost);
+    const sql = 'SELECT * FROM posts WHERE id = ?';
+    connection.query(sql, [postsId], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: true, message: 'Errore interno del server' });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ error: true, message: 'Post non trovato' });
+        }
+        console.log(results[0]);
+        res.json(results[0]);
+    });
 }
 
 const store = (req, res) => {
